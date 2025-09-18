@@ -166,6 +166,7 @@
             $(document).on('click', '.remove-link', function() {
                 $(this).closest('.link-input-item').remove();
                 updateRemoveButtons();
+                updateSetNumbers();
             });
 
             // Form submission
@@ -223,6 +224,23 @@
             } else {
                 $('.remove-link').hide();
             }
+        }
+
+        function updateSetNumbers() {
+            $('.link-input-item').each(function(index) {
+                const setNumber = index + 1;
+                $(this).find('.link-set-header h6').html(`<i class="fa fa-link"></i> Link Set #${setNumber}`);
+                
+                // Update input field names and IDs to be sequential
+                const titleInput = $(this).find('input[name*="Title"]');
+                const urlInput = $(this).find('input[name*="Url"]');
+                
+                titleInput.attr('name', `links[${index}].Title`).attr('id', `title_${index}`);
+                urlInput.attr('name', `links[${index}].Url`).attr('id', `url_${index}`);
+            });
+            
+            // Update the linkCounter to match the current number of items
+            linkCounter = $('.link-input-item').length - 1;
         }
 
         function loadExistingLinks(page = 1) {
